@@ -2,9 +2,9 @@
 
 This repository contains the complete Python code for the mathematical model presented in:
 
-**"Quantifying Synergy in Measles-Cholera Co-infection: A Mathematical Model with Immunosuppression"**
+*"Quantifying Synergy in Measles-Cholera Co-infection: A Mathematical Model with Immunosuppression"*
 
-*Asgedom A.A. and Welua T.A.*
+*Asgedom A.A. and Welu T.A.*
 
 ---
 
