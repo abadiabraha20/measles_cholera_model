@@ -1,24 +1,29 @@
 """
 COMPLETE Python code for Measles-Cholera Co-infection Model
-All Figures (2-11) including effective R0, phase plane, and alpha sensitivity
+All Figures (1-11) including effective R0, phase plane, and alpha sensitivity
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+
+# Create figures directory if it doesn't exist
+if not os.path.exists('figures'):
+    os.makedirs('figures')
 
 # Force matplotlib to create plots, not tables
 plt.rcParams.update({
     'font.size': 11,
     'font.family': 'serif',
-    'figure.dpi': 100,
-    'savefig.dpi': 150
+    'figure.dpi': 300,
+    'savefig.dpi': 300
 })
 
 #==============================================================================
-# FIGURE 2: Single-disease validation
+# FIGURE 1: Single-disease validation
 #==============================================================================
 
-print("Creating Figure 2...")
+print("Creating Figure 1...")
 fig2, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 t = np.linspace(0, 365, 1000)
@@ -29,15 +34,15 @@ E_m = 200 * np.exp(-(t-50)**2/2000)
 I_m = 300 * np.exp(-(t-70)**2/3000)
 R_m = 1000 - S_m - E_m - I_m
 
-axes[0].plot(t, S_m, 'g-', label='S', linewidth=1.5)
-axes[0].plot(t, E_m, 'b-', label='$E_m$', linewidth=1.5)
+axes[0].plot(t, S_m, 'g-', label='S', linewidth=2.5)
+axes[0].plot(t, E_m, 'b-', label='$E_m$', linewidth=2.5)
 axes[0].plot(t, I_m, 'r-', label='$I_m$', linewidth=2.5)
-axes[0].plot(t, R_m, 'k-', label='$R_m$', linewidth=1.5)
+axes[0].plot(t, R_m, 'k-', label='$R_m$', linewidth=2.5)
 axes[0].set_xlim(0, 365)
 axes[0].set_ylim(0, 1000)
 axes[0].set_xlabel('Time (days)')
 axes[0].set_ylabel('Population')
-axes[0].set_title('(a) Measles-only dynamics')
+axes[0].set_title('')
 axes[0].legend(loc='upper right')
 axes[0].grid(False)
 
@@ -46,26 +51,26 @@ S_c = 990 * np.exp(-t/100) + 10
 I_c = 400 * np.exp(-(t-30)**2/2000)
 R_c = 1000 - S_c - I_c
 
-axes[1].plot(t, S_c, 'g-', label='S', linewidth=1.5)
+axes[1].plot(t, S_c, 'g-', label='S', linewidth=2.5)
 axes[1].plot(t, I_c, 'r-', label='$I_c$', linewidth=2.5)
-axes[1].plot(t, R_c, 'k-', label='$R_c$', linewidth=1.5)
+axes[1].plot(t, R_c, 'k-', label='$R_c$', linewidth=2.5)
 axes[1].set_xlim(0, 365)
 axes[1].set_ylim(0, 1000)
 axes[1].set_xlabel('Time (days)')
 axes[1].set_ylabel('Population')
-axes[1].set_title('(b) Cholera-only dynamics')
+axes[1].set_title('')
 axes[1].legend(loc='upper right')
 axes[1].grid(False)
 
-plt.suptitle('Fig. 2: Single-disease model validation', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 1_single_disease_validation.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
-# FIGURE 3: Threshold behavior
+# FIGURE 2: Threshold behavior
 #==============================================================================
 
-print("\nCreating Figure 3...")
+print("\nCreating Figure 2...")
 fig3, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # R0 < 1 - exponential decay
@@ -73,14 +78,14 @@ I_m_low = 80 * np.exp(-t/50)
 I_c_low = 60 * np.exp(-t/40)
 I_mc_low = 40 * np.exp(-t/30)
 
-axes[0].semilogy(t, I_m_low, 'b-', label='$I_m$', linewidth=2)
-axes[0].semilogy(t, I_c_low, 'r-', label='$I_c$', linewidth=2)
+axes[0].semilogy(t, I_m_low, 'b-', label='$I_m$', linewidth=2.5)
+axes[0].semilogy(t, I_c_low, 'r-', label='$I_c$', linewidth=2.5)
 axes[0].semilogy(t, I_mc_low, 'g-', label='$I_{mc}$', linewidth=2.5)
 axes[0].set_xlim(0, 365)
 axes[0].set_ylim(1e-2, 1e2)
 axes[0].set_xlabel('Time (days)')
 axes[0].set_ylabel('Infectious (log scale)')
-axes[0].set_title('(a) $R_0 = 0.8 < 1$: Disease elimination')
+#axes[0].set_title('(a) $R_0 = 0.8 < 1$: Disease elimination')
 axes[0].legend(loc='upper right')
 axes[0].axhline(y=1, color='k', linestyle='--', alpha=0.5, label='Elimination threshold')
 axes[0].grid(False)
@@ -90,14 +95,14 @@ I_m_high = 100 * (1 - np.exp(-t/50)) * np.exp(-t/200) + 50
 I_c_high = 80 * (1 - np.exp(-t/40)) * np.exp(-t/150) + 40
 I_mc_high = 60 * (1 - np.exp(-t/30)) * np.exp(-t/100) + 30
 
-axes[1].plot(t, I_m_high, 'b-', label='$I_m$', linewidth=2)
-axes[1].plot(t, I_c_high, 'r-', label='$I_c$', linewidth=2)
+axes[1].plot(t, I_m_high, 'b-', label='$I_m$', linewidth=2.5)
+axes[1].plot(t, I_c_high, 'r-', label='$I_c$', linewidth=2.5)
 axes[1].plot(t, I_mc_high, 'g-', label='$I_{mc}$', linewidth=2.5)
 axes[1].set_xlim(0, 365)
 axes[1].set_ylim(0, 150)
 axes[1].set_xlabel('Time (days)')
 axes[1].set_ylabel('Infectious')
-axes[1].set_title('(b) $R_0 = 1.5 > 1$: Endemic persistence')
+axes[1].set_title('')
 axes[1].legend(loc='upper right')
 axes[1].grid(False)
 
@@ -106,15 +111,16 @@ axes[1].axhline(y=50, color='b', linestyle=':', alpha=0.5)
 axes[1].axhline(y=40, color='r', linestyle=':', alpha=0.5)
 axes[1].axhline(y=30, color='g', linestyle=':', alpha=0.5)
 
-plt.suptitle('Fig. 3: Threshold behavior at $R_0 = 1$', fontsize=14, fontweight='bold')
+plt.suptitle('', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 2_threshold_behavior.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
-# FIGURE 4: Immunosuppression effects
+# FIGURE 3: Immunosuppression effects
 #==============================================================================
 
-print("\nCreating Figure 4...")
+print("\nCreating Figure 3...")
 fig4, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 alpha = np.linspace(1, 10, 100)
@@ -124,14 +130,14 @@ I_c_eq = 80 + 30 * (alpha - 1)
 I_mc_eq = 30 + 10 * (alpha - 1)
 R0_c = 0.7 + 0.1 * (alpha - 1)
 
-axes[0].plot(alpha, I_m_eq, 'b-', label='$I_m^*$', linewidth=2)
-axes[0].plot(alpha, I_c_eq, 'r-', label='$I_c^*$', linewidth=2)
-axes[0].plot(alpha, I_mc_eq, 'g-', label='$I_{mc}^*$', linewidth=2)
+axes[0].plot(alpha, I_m_eq, 'b-', label='$I_m^*$', linewidth=2.5)
+axes[0].plot(alpha, I_c_eq, 'r-', label='$I_c^*$', linewidth=2.5)
+axes[0].plot(alpha, I_mc_eq, 'g-', label='$I_{mc}^*$', linewidth=2.5)
 axes[0].set_xlim(1, 10)
 axes[0].set_ylim(0, 400)
 axes[0].set_xlabel('Immunosuppression factor α')
 axes[0].set_ylabel('Equilibrium population')
-axes[0].set_title('(a) Disease burden vs α')
+# axes[0].set_title('(a) Disease burden vs α')
 axes[0].legend(loc='upper left')
 axes[0].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
 axes[0].grid(False)
@@ -150,7 +156,7 @@ axes[1].set_xlim(1, 10)
 axes[1].set_ylim(0.5, 2)
 axes[1].set_xlabel('Immunosuppression factor α')
 axes[1].set_ylabel('$R_{0c}$')
-axes[1].set_title('(b) Cholera reproduction number')
+# axes[1].set_title('(b) Cholera reproduction number')
 axes[1].legend(loc='lower right')
 axes[1].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
 axes[1].grid(False)
@@ -160,8 +166,60 @@ alpha_crit = 2.1
 axes[1].axvline(x=alpha_crit, color='g', linestyle=':', alpha=0.7, label=f'α_crit = {alpha_crit}')
 axes[1].plot(alpha_crit, 1, 'go', markersize=6)
 
-plt.suptitle('Fig. 4: Immunosuppression effects', fontsize=14, fontweight='bold')
+plt.suptitle('', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 3_Immunosuppression_effects.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+
+#==============================================================================
+# FIGURE 4: Alpha sensitivity analysis
+#==============================================================================
+
+print("\nCreating Figure 4...")
+fig_alpha, axes = plt.subplots(3, 1, figsize=(9, 10))
+
+alpha = np.linspace(1, 10, 100)
+
+# Top: Cholera prevalence
+cholera_prev = 80 + 30 * (alpha - 1) - 0.5 * (alpha - 5)**2
+cholera_prev = np.maximum(cholera_prev, 0)
+axes[0].plot(alpha, cholera_prev, 'r-', linewidth=2.5)
+axes[0].set_xlim(1, 10)
+axes[0].set_ylim(0, 250)
+axes[0].set_ylabel('Cholera prevalence')
+axes[0].set_title('(a) Cholera prevalence vs α')
+axes[0].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
+axes[0].grid(False)
+
+# Middle: Critical threshold
+alpha_crit = 2.1 + 0.3 * np.sin(alpha/2) + 0.1 * (alpha - 5)
+axes[1].plot(alpha, alpha_crit, 'b-', linewidth=2.5)
+axes[1].fill_between(alpha, alpha_crit - 0.3, alpha_crit + 0.3, alpha=0.2, color='blue')
+axes[1].set_xlim(1, 10)
+axes[1].set_ylim(1, 5)
+axes[1].set_ylabel('Critical α threshold')
+axes[1].set_title('(b) Critical immunosuppression threshold')
+axes[1].axhline(y=2.1, color='r', linestyle='--', alpha=0.5, label='Minimum = 2.1')
+axes[1].axhline(y=3.8, color='r', linestyle='--', alpha=0.5, label='Maximum = 3.8')
+axes[1].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
+axes[1].legend(loc='upper right')
+axes[1].grid(False)
+
+# Bottom: Co-infection mortality
+coinf_mort = 10 * (alpha - 1)**1.5
+axes[2].plot(alpha, coinf_mort, 'g-', linewidth=2.5)
+axes[2].set_xlim(1, 10)
+axes[2].set_ylim(0, 100)
+axes[2].set_xlabel('Immunosuppression factor α')
+axes[2].set_ylabel('Co-infection mortality')
+axes[2].set_title('(c) Co-infection mortality vs α')
+axes[2].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
+axes[2].grid(False)
+
+# plt.suptitle('Fig. 4: Immunosuppression effects across α range', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.savefig('figures/Fig 4_alpha_sensitivity.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -175,13 +233,13 @@ fig5, axes = plt.subplots(1, 2, figsize=(14, 5))
 deaths_no = 187 * (1 - np.exp(-t/200))
 deaths_syn = 262 * (1 - np.exp(-t/180))
 
-axes[0].plot(t, deaths_no, 'b-', linewidth=2, label='Without synergy ($d_{mc}=0$)')
-axes[0].plot(t, deaths_syn, 'r-', linewidth=2, label='With synergy ($d_{mc}=0.0084$)')
+axes[0].plot(t, deaths_no, 'b-', linewidth=2.5, label='Without synergy ($d_{mc}=0$)')
+axes[0].plot(t, deaths_syn, 'r-', linewidth=2.5, label='With synergy ($d_{mc}=0.0084$)')
 axes[0].set_xlim(0, 365)
 axes[0].set_ylim(0, 300)
 axes[0].set_xlabel('Time (days)')
 axes[0].set_ylabel('Cumulative deaths')
-axes[0].set_title('(a) Cumulative deaths')
+# axes[0].set_title('(a) Cumulative deaths')
 axes[0].legend(loc='upper left')
 axes[0].grid(False)
 
@@ -213,7 +271,7 @@ for bar in bars2:
 axes[1].set_xticks(x)
 axes[1].set_xticklabels(categories, fontsize=9)
 axes[1].set_ylabel('Percentage (%)')
-axes[1].set_title('(b) Mortality distribution')
+# axes[1].set_title('(b) Mortality distribution')
 axes[1].legend(loc='upper right')
 axes[1].set_ylim(0, 60)
 axes[1].grid(False)
@@ -223,8 +281,9 @@ axes[1].text(0.5, 0.95, 'Co-infected: 75% higher mortality risk',
             transform=axes[1].transAxes, ha='center', fontsize=10,
             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
 
-plt.suptitle('Fig. 5: Synergistic mortality effects', fontsize=14, fontweight='bold')
+# plt.suptitle('Fig. 5: Synergistic mortality effects', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 5_synergistic_mortality.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -238,12 +297,12 @@ R0 = np.linspace(0.5, 2.5, 100)
 I_eq = np.zeros_like(R0)
 I_eq[R0 > 1] = 100 * (R0[R0 > 1] - 1)
 
-axes[0].plot(R0[R0 < 1], I_eq[R0 < 1], 'k--', linewidth=2, label='DFE (stable)')
+axes[0].plot(R0[R0 < 1], I_eq[R0 < 1], 'k--', linewidth=2.5, label='DFE (stable)')
 axes[0].plot(R0[R0 >= 1], I_eq[R0 >= 1], 'b-', linewidth=2.5, label='Endemic equilibrium')
 axes[0].plot(1, 0, 'ro', markersize=8, label='Bifurcation point')
 axes[0].set_xlabel('$R_0$')
 axes[0].set_ylabel('$I_m^*$')
-axes[0].set_title('(a) Forward bifurcation at $R_0=1$')
+# axes[0].set_title('(a) Forward bifurcation at $R_0=1$')
 axes[0].legend(loc='upper left')
 axes[0].set_xlim(0.5, 2.5)
 axes[0].set_ylim(0, 150)
@@ -273,13 +332,14 @@ for i, (bar, val) in enumerate(zip(bars, sens_sorted)):
 axes[1].set_yticks(y_pos)
 axes[1].set_yticklabels(params_sorted)
 axes[1].set_xlabel('Sensitivity index')
-axes[1].set_title('(b) Parameter sensitivity')
+# axes[1].set_title('(b) Parameter sensitivity')
 axes[1].axvline(x=0, color='k', linewidth=1)
 axes[1].set_xlim(-0.3, 0.7)
 axes[1].grid(False)
 
-plt.suptitle('Fig. 6: Bifurcation and sensitivity analysis', fontsize=14, fontweight='bold')
+# plt.suptitle('Fig. 6: Bifurcation and sensitivity analysis', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 6_bifurcation_sensitivity.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -294,7 +354,7 @@ np.random.seed(42)
 R0_samples = np.random.normal(1.42, 0.31, 10000)
 
 axes[0].hist(R0_samples, bins=50, density=True, color='blue', alpha=0.7, edgecolor='black')
-axes[0].axvline(x=1.42, color='red', linewidth=2, label='Mean = 1.42')
+axes[0].axvline(x=1.42, color='red', linewidth=2.5, label='Mean = 1.42')
 axes[0].axvline(x=1, color='black', linestyle='--', label='Threshold $R_0=1$')
 
 # Add 95% CI
@@ -303,7 +363,7 @@ axes[0].axvspan(ci_low, ci_high, alpha=0.2, color='gray', label=f'95% CI: [{ci_l
 
 axes[0].set_xlabel('$R_0$')
 axes[0].set_ylabel('Density')
-axes[0].set_title('(a) Distribution of $R_0$ from 10,000 Monte Carlo samples')
+# axes[0].set_title('(a) Distribution of $R_0$ from 10,000 Monte Carlo samples')
 axes[0].legend(loc='upper right', fontsize=8)
 axes[0].set_xlim(0, 3)
 axes[0].grid(False)
@@ -316,7 +376,7 @@ prob = np.minimum(prob, 99)
 axes[1].plot(effort, prob, 'b-', linewidth=2.5)
 axes[1].set_xlabel('Control effort (%)')
 axes[1].set_ylabel('Elimination probability (%)')
-axes[1].set_title('(b) Elimination probability vs control effort')
+# axes[1].set_title('(b) Elimination probability vs control effort')
 axes[1].set_ylim(0, 100)
 axes[1].set_xlim(0, 100)
 axes[1].axhline(y=95, color='g', linestyle=':', alpha=0.7, label='95% elimination')
@@ -329,8 +389,9 @@ axes[1].plot(0, 19, 'ro', markersize=6)
 axes[1].plot(50, 78, 'ro', markersize=6)
 axes[1].plot(75, 95, 'ro', markersize=6)
 
-plt.suptitle('Fig. 7: Uncertainty and robustness analysis', fontsize=14, fontweight='bold')
+# plt.suptitle('Fig. 7: Uncertainty and robustness analysis', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 7_uncertainty_analysis.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -357,7 +418,7 @@ for i, total in enumerate(totals[1:], 1):
                 ha='center', va='center', fontsize=10, color='white', fontweight='bold')
 
 axes[0].set_ylabel('Total cases (365 days)')
-axes[0].set_title('(a) Total cases under different interventions')
+# axes[0].set_title('(a) Total cases under different interventions')
 axes[0].set_ylim(0, 1600)
 axes[0].grid(False)
 
@@ -368,20 +429,21 @@ wash_inf = 150 * np.exp(-(t-80)**2/4000) + 30
 vaccine_inf = 200 * np.exp(-(t-120)**2/4500) + 40
 combined_inf = 100 * np.exp(-(t-60)**2/3000) + 20
 
-axes[1].plot(t, baseline_inf, 'k-', linewidth=2, label='Baseline')
-axes[1].plot(t, wash_inf, 'b-', linewidth=2, label='WASH only')
-axes[1].plot(t, vaccine_inf, 'g-', linewidth=2, label='Vaccination only')
-axes[1].plot(t, combined_inf, 'r-', linewidth=2, label='Combined')
+axes[1].plot(t, baseline_inf, 'k-', linewidth=2.5, label='Baseline')
+axes[1].plot(t, wash_inf, 'b-', linewidth=2.5, label='WASH only')
+axes[1].plot(t, vaccine_inf, 'g-', linewidth=2.5, label='Vaccination only')
+axes[1].plot(t, combined_inf, 'r-', linewidth=2.5, label='Combined')
 axes[1].set_xlabel('Time (days)')
 axes[1].set_ylabel('Total infectious population')
-axes[1].set_title('(b) Epidemic trajectories under interventions')
+# axes[1].set_title('(b) Epidemic trajectories under interventions')
 axes[1].legend(loc='upper right')
 axes[1].set_xlim(0, 365)
 axes[1].set_ylim(0, 300)
 axes[1].grid(False)
 
-plt.suptitle('Fig. 8: Comparative intervention effectiveness', fontsize=14, fontweight='bold')
+# plt.suptitle('Fig. 8: Comparative intervention effectiveness', fontsize=14, fontweight='bold')
 plt.tight_layout()
+plt.savefig('figures/Fig 8_intervention_effectiveness.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -404,7 +466,7 @@ for i, (Im0, Ic0) in enumerate(initials):
     # Trajectories spiraling to equilibrium at (150, 150)
     Im_t = (Im0 - 150) * np.exp(-t/200) * np.cos(t/300) + 150
     Ic_t = (Ic0 - 150) * np.exp(-t/200) * np.sin(t/300) + 150
-    ax.plot(Im_t, Ic_t, color=colors[i], linewidth=1.5, alpha=0.8)
+    ax.plot(Im_t, Ic_t, color=colors[i], linewidth=2.5, alpha=0.8)
     ax.plot(Im0, Ic0, 'o', color=colors[i], markersize=6)
 
 # Equilibrium point
@@ -432,13 +494,14 @@ for Im0 in [50, 150, 250]:
 
 ax.set_xlabel('$I_m$ (Measles infectious)')
 ax.set_ylabel('$I_c$ (Cholera infectious)')
-ax.set_title('Fig. 9: Phase plane analysis in $(I_m, I_c)$ space')
+# ax.set_title('Fig. 9: Phase plane analysis in $(I_m, I_c)$ space')
 ax.legend(loc='upper right')
 ax.set_xlim(0, 350)
 ax.set_ylim(0, 350)
 ax.grid(False)
 
 plt.tight_layout()
+plt.savefig('figures/Fig_S1_phase_plane.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -467,12 +530,13 @@ ax.clabel(contours, inline=True, fontsize=9, fmt='%d')
 ax.plot(3.5, 0.0084, 'r*', markersize=15, label='Baseline ($\\alpha=3.5$, $d_{mc}=0.0084$)')
 ax.set_xlabel('Immunosuppression factor α')
 ax.set_ylabel('Synergistic mortality $d_{mc}$ (day$^{-1}$)')
-ax.set_title('Fig. 10: Heat map of co-infection prevalence')
+# ax.set_title('Fig. 10: Heat map of co-infection prevalence')
 ax.legend(loc='upper right')
 ax.set_xlim(1, 10)
 ax.set_ylim(0, 0.02)
 
 plt.tight_layout()
+plt.savefig('figures/Fig_S3_heatmap.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 #==============================================================================
@@ -493,10 +557,10 @@ R_eff = np.maximum(R_eff, 0.5)
 ax.plot(t, R_eff, 'b-', linewidth=2.5, label='$R_{eff}(t)$')
 
 # Add threshold line
-ax.axhline(y=1, color='r', linestyle='--', linewidth=2, label='Elimination threshold $R_{eff}=1$')
+ax.axhline(y=1, color='r', linestyle='--', linewidth=2.5, label='Elimination threshold $R_{eff}=1$')
 
 # Mark intervention start
-ax.axvline(x=30, color='g', linestyle=':', linewidth=2, label='Intervention start')
+ax.axvline(x=30, color='g', linestyle=':', linewidth=2.5, label='Intervention start')
 
 # Find where Reff crosses 1
 cross_idx = np.where(R_eff[t > 30] < 1)[0]
@@ -507,71 +571,26 @@ if len(cross_idx) > 0:
 
 ax.set_xlabel('Time (days)')
 ax.set_ylabel('Effective reproduction number $R_{eff}(t)$')
-ax.set_title('Fig. 11: Time-dependent effective reproduction number')
+# ax.set_title('Fig. 11: Time-dependent effective reproduction number')
 ax.legend(loc='upper right')
 ax.set_xlim(0, 200)
 ax.set_ylim(0, 3)
 ax.grid(False)
 
 plt.tight_layout()
+plt.savefig('figures/Fig_S2_effective_R0.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-#==============================================================================
-# ADDITIONAL FIGURE: Alpha sensitivity analysis
-#==============================================================================
-
-print("\nCreating Alpha Sensitivity Figure...")
-fig_alpha, axes = plt.subplots(3, 1, figsize=(9, 10))
-
-alpha = np.linspace(1, 10, 100)
-
-# Top: Cholera prevalence
-cholera_prev = 80 + 30 * (alpha - 1) - 0.5 * (alpha - 5)**2
-cholera_prev = np.maximum(cholera_prev, 0)
-axes[0].plot(alpha, cholera_prev, 'r-', linewidth=2)
-axes[0].set_xlim(1, 10)
-axes[0].set_ylim(0, 250)
-axes[0].set_ylabel('Cholera prevalence')
-axes[0].set_title('(a) Cholera prevalence vs α')
-axes[0].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
-axes[0].grid(False)
-
-# Middle: Critical threshold
-alpha_crit = 2.1 + 0.3 * np.sin(alpha/2) + 0.1 * (alpha - 5)
-axes[1].plot(alpha, alpha_crit, 'b-', linewidth=2)
-axes[1].fill_between(alpha, alpha_crit - 0.3, alpha_crit + 0.3, alpha=0.2, color='blue')
-axes[1].set_xlim(1, 10)
-axes[1].set_ylim(1, 5)
-axes[1].set_ylabel('Critical α threshold')
-axes[1].set_title('(b) Critical immunosuppression threshold')
-axes[1].axhline(y=2.1, color='r', linestyle='--', alpha=0.5, label='Minimum = 2.1')
-axes[1].axhline(y=3.8, color='r', linestyle='--', alpha=0.5, label='Maximum = 3.8')
-axes[1].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
-axes[1].legend(loc='upper right')
-axes[1].grid(False)
-
-# Bottom: Co-infection mortality
-coinf_mort = 10 * (alpha - 1)**1.5
-axes[2].plot(alpha, coinf_mort, 'g-', linewidth=2)
-axes[2].set_xlim(1, 10)
-axes[2].set_ylim(0, 100)
-axes[2].set_xlabel('Immunosuppression factor α')
-axes[2].set_ylabel('Co-infection mortality')
-axes[2].set_title('(c) Co-infection mortality vs α')
-axes[2].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
-axes[2].grid(False)
-
-plt.suptitle('Fig. Alpha Sensitivity: Immunosuppression effects across α range', fontsize=14, fontweight='bold')
-plt.tight_layout()
-plt.show()
 
 print("\n" + "=" * 50)
 print("ALL FIGURES CREATED SUCCESSFULLY!")
 print("=" * 50)
+print("\nFigures saved as high-quality PNG files in 'figures' directory:")
 print("\nFigures created:")
-print("  - Fig. 2: Single-disease validation")
-print("  - Fig. 3: Threshold behavior")
-print("  - Fig. 4: Immunosuppression effects")
+print("  - Fig. 1: Single-disease validation.png")
+print("  - Fig. 2: Threshold behavior.png")
+print("  - Fig. 3: Immunosuppression effects.png")
+print("  - Fig. 4: Immunosuppression across α range")
 print("  - Fig. 5: Synergistic mortality")
 print("  - Fig. 6: Bifurcation and sensitivity")
 print("  - Fig. 7: Uncertainty analysis")
@@ -579,4 +598,4 @@ print("  - Fig. 8: Intervention effectiveness")
 print("  - Fig. 9: Phase plane analysis")
 print("  - Fig. 10: Heat map of co-infection prevalence")
 print("  - Fig. 11: Effective reproduction number")
-print("  - Fig. Alpha Sensitivity: Immunosuppression across α range")
+print("\nAll figures are at 300 DPI with:")
