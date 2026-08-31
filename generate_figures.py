@@ -118,17 +118,19 @@ plt.show()
 
 #==============================================================================
 # FIGURE 3: Immunosuppression effects
-#==============================================================================
+# ==============================================================================
 
 print("\nCreating Figure 3...")
 fig4, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 alpha = np.linspace(1, 10, 100)
 
+# ================================================================
+# FIGURE 3(a): UNCHANGED (original code)
+# ================================================================
 I_m_eq = 50 + 15 * (alpha - 1)
 I_c_eq = 80 + 30 * (alpha - 1)
 I_mc_eq = 30 + 10 * (alpha - 1)
-R0_c = 0.7 + 0.1 * (alpha - 1)
 
 axes[0].plot(alpha, I_m_eq, 'b-', label='$I_m^*$', linewidth=2.5)
 axes[0].plot(alpha, I_c_eq, 'r-', label='$I_c^*$', linewidth=2.5)
@@ -150,10 +152,19 @@ axes[0].plot(1, 80, 'rs', markersize=8)
 axes[0].annotate('+220%', xy=(3.5, 80+30*2.5), xytext=(5, 250),
                 arrowprops=dict(arrowstyle='->', color='black'))
 
-axes[1].plot(alpha, R0_c, 'r-', linewidth=2.5, label='$R_{0c}$')
+# ================================================================
+# FIGURE 3(b): CORRECTED (constant R0, no alpha dependence)
+# ================================================================
+
+# CORRECTED: R0c is constant (independent of alpha)
+# Using the analytical value from the corrected model
+R0_corrected = 1.707  # beta_c / (gamma_c + mu + d_c)
+
+# Plot corrected R0c
+axes[1].axhline(y=R0_corrected, color='r', linewidth=2.5, label='$R_{0c}$ (constant)')
 axes[1].axhline(y=1, color='k', linestyle='--', label='Threshold $R_0=1$')
 axes[1].set_xlim(1, 10)
-axes[1].set_ylim(0.5, 2)
+axes[1].set_ylim(0.5, 2.5)
 axes[1].set_xlabel('Immunosuppression factor α')
 axes[1].set_ylabel('$R_{0c}$')
 # axes[1].set_title('(b) Cholera reproduction number')
@@ -161,10 +172,7 @@ axes[1].legend(loc='lower right')
 axes[1].axvline(x=3.5, color='k', linestyle=':', alpha=0.5)
 axes[1].grid(False)
 
-# Find critical alpha
-alpha_crit = 2.1
-axes[1].axvline(x=alpha_crit, color='g', linestyle=':', alpha=0.7, label=f'α_crit = {alpha_crit}')
-axes[1].plot(alpha_crit, 1, 'go', markersize=6)
+# Note: No critical alpha threshold (R0c remains above 1)
 
 plt.suptitle('', fontsize=14, fontweight='bold')
 plt.tight_layout()
@@ -254,9 +262,9 @@ death_pct = [31, 41, 28]
 
 x = np.arange(3)
 width = 0.35
-bars1 = axes[1].bar(x - width/2, inf_pct, width, label='% of Infections', 
+bars1 = axes[1].bar(x - width/2, inf_pct, width, label='% of Infections',
                     color='blue', alpha=0.7, edgecolor='black')
-bars2 = axes[1].bar(x + width/2, death_pct, width, label='% of Deaths', 
+bars2 = axes[1].bar(x + width/2, death_pct, width, label='% of Deaths',
                     color='red', alpha=0.7, edgecolor='black')
 
 for bar in bars1:
@@ -277,7 +285,7 @@ axes[1].set_ylim(0, 60)
 axes[1].grid(False)
 
 # Add relative risk annotation
-axes[1].text(0.5, 0.95, 'Co-infected: 75% higher mortality risk', 
+axes[1].text(0.5, 0.95, 'Co-infected: 75% higher mortality risk',
             transform=axes[1].transAxes, ha='center', fontsize=10,
             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
 
@@ -323,10 +331,10 @@ bars = axes[1].barh(y_pos, sens_sorted, color=colors, alpha=0.7, edgecolor='blac
 
 for i, (bar, val) in enumerate(zip(bars, sens_sorted)):
     if val > 0:
-        axes[1].text(val + 0.02, bar.get_y() + bar.get_height()/2, f'+{val:.2f}', 
+        axes[1].text(val + 0.02, bar.get_y() + bar.get_height()/2, f'+{val:.2f}',
                     va='center', fontsize=9)
     else:
-        axes[1].text(val - 0.05, bar.get_y() + bar.get_height()/2, f'{val:.2f}', 
+        axes[1].text(val - 0.05, bar.get_y() + bar.get_height()/2, f'{val:.2f}',
                     va='center', fontsize=9)
 
 axes[1].set_yticks(y_pos)
@@ -414,7 +422,7 @@ for bar, total in zip(bars, totals):
 
 for i, total in enumerate(totals[1:], 1):
     reduction = 100 * (totals[0] - total) / totals[0]
-    axes[0].text(i, totals[i]/2, f'{reduction:.0f}% reduction', 
+    axes[0].text(i, totals[i]/2, f'{reduction:.0f}% reduction',
                 ha='center', va='center', fontsize=10, color='white', fontweight='bold')
 
 axes[0].set_ylabel('Total cases (365 days)')
@@ -589,7 +597,7 @@ print("\nFigures saved as high-quality PNG files in 'figures' directory:")
 print("\nFigures created:")
 print("  - Fig. 1: Single-disease validation.png")
 print("  - Fig. 2: Threshold behavior.png")
-print("  - Fig. 3: Immunosuppression effects.png")
+print("  - Fig. 3: Immunosuppression effects.png (Figure 3(b) CORRECTED)")
 print("  - Fig. 4: Immunosuppression across α range")
 print("  - Fig. 5: Synergistic mortality")
 print("  - Fig. 6: Bifurcation and sensitivity")
