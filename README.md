@@ -47,3 +47,9 @@ measles_cholera_model/
 ├── FigS2.png                    # Effective reproduction number
 └── FigS3.png                    # Heatmap of co-infection prevalence
 ---
+
+## 📜 License & Citation
+
+This code is provided for reproducibility and peer-review validation. If you use this code or model in your research, please cite:
+
+> Asgedom, A. A., & Welu, T. A. (2026). *Quantifying Synergy in Measles-Cholera Co-infection: A Mathematical Model with Immunosuppression.* Journal of Applied Mathematics.
